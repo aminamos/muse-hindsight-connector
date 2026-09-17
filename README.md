@@ -67,6 +67,17 @@ Optional overrides: `HINDSIGHT_BANK_TEMPLATE` (default
 Bank naming needs no `git` binary: the repo name is read from `.git/config`
 purely via the filesystem, falling back to the directory name.
 
+## One shared bank across all agents
+
+By default every repo gets its own `coding-agent::<project>` bank. To share one
+bank with other harnesses (e.g. omp's `omp` bank), set the template to a fixed
+name — memories are still tagged per project (`project:<name>`) and per harness
+(`harness:muse`), so recall stays scoped but nothing is siloed:
+
+```sh
+node bin/cli.js configure   # set bankIdTemplate to: omp
+```
+
 ## Tests
 
 ```sh
