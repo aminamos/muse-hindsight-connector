@@ -1,0 +1,31 @@
+{
+  "name": "muse-hindsight-connector",
+  "version": "0.1.0",
+  "description": "Native Muse Code plugin: long-term Hindsight memory via lifecycle hooks, MCP tools, and a companion skill.",
+  "license": "MIT",
+  "author": "aminamos",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aminamos/muse-hindsight-connector.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "commonjs",
+  "bin": {
+    "muse-hindsight": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node --test test/lib.test.js test/manifest.test.js test/hooks.test.js test/mcp.test.js",
+    "smoke": "node --test test/smoke-live.test.js"
+  },
+  "files": [
+    ".muse-plugin",
+    "bin",
+    "commands",
+    "hooks",
+    "lib",
+    "mcp",
+    "skills"
+  ]
+}

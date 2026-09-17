@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "name": "hindsight-muse",
+  "displayName": "Hindsight Memory for Muse",
+  "version": "0.1.0",
+  "description": "Long-term Hindsight memory for Muse Code: session seeding, per-prompt recall, transcript write-back, MCP tools, and a companion skill.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [
+      {
+        "id": "hindsight",
+        "path": "skills/hindsight/SKILL.md",
+        "enabledDefault": true
+      }
+    ],
+    "commands": [
+      {
+        "id": "hindsight-status",
+        "path": "commands/hindsight-status.md",
+        "enabledDefault": true
+      }
+    ],
+    "hooks": [
+      {
+        "id": "session-start",
+        "event": "SessionStart",
+        "command": ["node", "hooks/session-start.js"],
+        "timeoutMs": 30000,
+        "statusMessage": "Seeding Hindsight memory"
+      },
+      {
+        "id": "user-prompt-submit",
+        "event": "UserPromptSubmit",
+        "command": ["node", "hooks/user-prompt-submit.js"],
+        "timeoutMs": 15000,
+        "statusMessage": "Recalling Hindsight memory"
+      },
+      {
+        "id": "stop-writeback",
+        "event": "Stop",
+        "command": ["node", "hooks/stop.js"],
+        "timeoutMs": 30000,
+        "statusMessage": "Saving session to Hindsight"
+      }
+    ],
+    "mcpServers": [
+      {
+        "id": "hindsight",
+        "transport": "stdio",
+        "command": ["node", "mcp/server.js"]
+      }
+    ],
+    "reminders": []
+  }
+}
