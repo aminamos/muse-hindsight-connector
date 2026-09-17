@@ -12,6 +12,9 @@ const { startStub } = require('./stub');
 
 const ROOT = path.join(__dirname, '..');
 
+// Isolate spawned hooks from the developer's real ~/.hindsight config.
+const EMPTY_HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'hindsight-empty-home-'));
+
 function makeRepo() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hindsight-hook-repo-'));
   fs.mkdirSync(path.join(root, '.git'), { recursive: true });
@@ -27,7 +30,7 @@ function makeRepo() {
 function runHook(script, input, env) {
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [path.join(ROOT, 'hooks', script)], {
-      env: { ...process.env, ...env },
+      env: { ...process.env, HOME: EMPTY_HOME, USERPROFILE: EMPTY_HOME, ...env },
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     let stdout = '';

@@ -13,6 +13,9 @@ const { startStub } = require('./stub');
 
 const ROOT = path.join(__dirname, '..');
 
+// Isolate the spawned server from the developer's real ~/.hindsight config.
+const EMPTY_HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'hindsight-empty-home-'));
+
 function makeRepo() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hindsight-mcp-repo-'));
   fs.mkdirSync(path.join(root, '.git'), { recursive: true });
@@ -25,7 +28,7 @@ function makeRepo() {
 
 async function withServer(env, fn) {
   const child = spawn(process.execPath, [path.join(ROOT, 'mcp', 'server.js')], {
-    env: { ...process.env, ...env },
+    env: { ...process.env, HOME: EMPTY_HOME, USERPROFILE: EMPTY_HOME, ...env },
     stdio: ['pipe', 'pipe', 'inherit'],
   });
   const rl = readline.createInterface({ input: child.stdout, crlfDelay: Infinity });
